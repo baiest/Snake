@@ -30,6 +30,7 @@ key = 'right'
 keyCola = 'right'
 direc = []
 game_over = False
+running = True
 
 i=1 #Retraso para la cola
 
@@ -40,7 +41,7 @@ while not game_over:
      
      newMatriz = np.copy(matriz)
      screen.fill(bg)
-     time.sleep(0.1)
+     time.sleep(0.03)
 
      newMatriz[eatx, eaty]=2
      
@@ -54,47 +55,54 @@ while not game_over:
           sery = 0
      if colay >= nyC:
           colay = 0
-          
-     if i > snake:
-          keyCola = direc[0]
-          if (keyCola == 'right'):
-               newMatriz[colax, colay]=0
-               colax+=1
-
-          if (keyCola == 'left'):
-               newMatriz[colax, colay]=0
-               colax-=1
-                    
-          if (keyCola == 'up'):
-               newMatriz[colax, colay]=0
-               colay-=1
-               
-          if (keyCola == 'down'):
-               newMatriz[colax, colay]=0
-               colay+=1
-
-          direc.pop(0)
-     else:
-          i+=1
      
-     #MOVIMIENTO DE LA SERPIENTE
-     if (key == 'right'):
-          newMatriz[serx,sery]=1
-          serx+=1
+     if key not in ['right', 'left', 'up', 'down']:
+          running = False
+     if running:     
+          if i > snake:
+               keyCola = direc[0]
+               if (keyCola == 'right'):
+                    newMatriz[colax, colay]=0
+                    colax+=1
 
-     if (key == 'left'):
-          newMatriz[serx,sery]=1
-          serx-=1
-               
-     if (key == 'up'):
-          newMatriz[serx,sery]=1
-          sery-=1
+               if (keyCola == 'left'):
+                    newMatriz[colax, colay]=0
+                    colax-=1
+                         
+               if (keyCola == 'up'):
+                    newMatriz[colax, colay]=0
+                    colay-=1
+                    
+               if (keyCola == 'down'):
+                    newMatriz[colax, colay]=0
+                    colay+=1
+
+               direc.pop(0)
+          else:
+               i+=1
           
-     if (key == 'down'):
-          newMatriz[serx,sery]=1
-          sery+=1
+          #MOVIMIENTO DE LA SERPIENTE
+          if (key == 'right'):
+               newMatriz[serx,sery]=1
+               serx+=1
 
-     direc.append(key)
+          if (key == 'left'):
+               newMatriz[serx,sery]=1
+               serx-=1
+                    
+          if (key == 'up'):
+               newMatriz[serx,sery]=1
+               sery-=1
+               
+          if (key == 'down'):
+               newMatriz[serx,sery]=1
+               sery+=1
+          try:
+               if  newMatriz[serx,sery]==1:
+                    game_over = True
+          except IndexError:
+               pass
+          direc.append(key)
 
      if serx < 0:
           serx = nxC-1
@@ -127,7 +135,7 @@ while not game_over:
                        ((x+1) * dimX,   (y+1) * dimY),
                        ((x)   * dimX,   (y+1) * dimY)]
                if (newMatriz[x, y]==0):
-                    pygame.draw.polygon(screen, (125,125,125), poly, 1)
+                    pygame.draw.polygon(screen, (0, 0, 0), poly, 0)
                elif(newMatriz[x, y]==1):
                     pygame.draw.polygon(screen, (255,255,255), poly, 0)
                else:
@@ -135,5 +143,3 @@ while not game_over:
 
      pygame.display.flip()
      matriz = np.copy(newMatriz)
-
-     
