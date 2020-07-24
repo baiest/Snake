@@ -1,14 +1,12 @@
-from tkinter import *
 from pynput.keyboard import Key, Listener
 import numpy as np
-import os
 import time
 import pygame
 from pygame.locals import *
 import random
 
 pygame.init()
-size= (600, 600)
+size= (700, 500)
 screen = pygame.display.set_mode(size)
 
 bg = (0,0,0)
@@ -16,11 +14,13 @@ screen.fill(bg)
 
 nxC, nyC = 50, 50
 
-dimX= size[0] // nxC
+dimX= 500 // nxC
 dimY= size[1] // nyC
 
+myfont = pygame.font.SysFont("arial black", 28)
 matriz= np.zeros((nxC , nyC))
 snake = 2
+point = 0
 serx, sery = 5, 10
 eatx, eaty = random.randint(0,nyC-1), random.randint(0,nyC-1)
 matriz[serx, sery]=1
@@ -31,8 +31,9 @@ direc = []
 game_over = False
 running = True
 flag = True
-vel = 0.03
+vel = 0.02
 boost = 5
+esperaMsg =  500
 
 i=1 #Retraso para la cola
 
@@ -40,10 +41,11 @@ pygame.display.flip()
 
 #BUCLE DE EJECUCION
 while not game_over:
+     """
      if snake == boost:
-          vel= vel / 10
+          vel= vel / 2
           boost += boost
-
+     """
      newMatriz = np.copy(matriz)
      screen.fill(bg)
      time.sleep(vel)
@@ -123,8 +125,7 @@ while not game_over:
               if (matriz[eatx,eaty]!=1):
                    break
           snake+=1 
-          print(snake)
-     
+          point+= 1
      for event in ev:
           if event.type is pygame.QUIT:
                 quit()
@@ -145,7 +146,6 @@ while not game_over:
                     running = False
                else:
                     running = True
-               print(newKey)
 
      for y in range(0, nyC):
           for x in range (0, nxC):
@@ -158,6 +158,30 @@ while not game_over:
                     pygame.draw.polygon(screen, (255,255,255), poly, 0)
                if(newMatriz[x, y]==2):
                     pygame.draw.polygon(screen, (0,255,0), poly, 0)
+     
+     pygame.draw.line(screen, (0,0, 150), (500, 0), (500, 500), 2)
+     pause = myfont.render("Any button:", 1, (255,255,255))
+     mspause = mecontrol = myfont.render("pause", 1, (255,255,255))
+     mecontrol = myfont.render("Move snake:", 1, (255,255,255))
+     control = myfont.render("←  →", 1, (255,255,255))
+     control2 = myfont.render("↑", 1, (255,255,255))
+     control3 = myfont.render("↓", 1, (255,255,255))
+     screen.blit(pause, (515, 170))
+     screen.blit(mspause, (562, 210))
+     screen.blit(control, (567, 385))
+     screen.blit(control2, (600, 365))
+     screen.blit(control3, (600,410))
+     screen.blit(mecontrol, (505,320))
+     
+     if snake>2:
+          label = myfont.render("Score:", 1, (255,255,255))
+          score = myfont.render( str(point), 1, (255,255,255))
+          screen.blit(label, (560, 30))
+          screen.blit(score, (590, 100))
+
+     else:
+          label = myfont.render("Hello!", 1, (255,255,255))
+          screen.blit(label, (560, 30))
 
      pygame.display.flip()
      matriz = np.copy(newMatriz)
