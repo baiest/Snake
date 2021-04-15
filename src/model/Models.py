@@ -5,7 +5,7 @@ class Tablero:
 
 class Cord:
     def __init__(self, row, col):
-        self.roe, self.col = row, col
+        self.row, self.col = row, col
 
 class Snake:
     def __init__(self, posiciones):
@@ -13,7 +13,7 @@ class Snake:
 
 class Food(Cord):
     def __init__(self, row, col):
-        super()
+        Cord.__init__(self, row, col)
 
 class Direction(Enum):
     RIGHT = 'right'
@@ -27,7 +27,11 @@ class State:
         self.snake = snake
         self.food = food
         self.direction = direction
-        
     
 
-
+def initial_state():
+    return State(
+        Tablero(10, 10),
+        Snake([Cord(5,5), Cord(4,5)]),
+        Food(6, 6),
+        Direction.RIGHT)
