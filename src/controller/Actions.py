@@ -1,4 +1,5 @@
 from model.Models import Cord, Direction
+import random
 class Actions:
     def __init__(self):
         pass
@@ -6,8 +7,26 @@ class Actions:
     def move_snake(self, state):
         next_direction = state.direction
         next_position = self._calc_position_snake(state)
-        if (self._movimiento_valido(state, next_direction)):
+        if ((state.food.row == next_position.row) 
+        and (state.food.col == next_position.col)):
+            self._crecer_snake(state, next_position)
+            state = self._generar_food(state)
+        elif (self._movimiento_valido(state, next_direction)):
             self._move_snake_to(state, next_position)
+        return state
+
+    def _crecer_snake(self, state, next_position):
+        new_snake = [next_position] + state.snake.posiciones
+        state.snake.posiciones = new_snake
+        return state
+
+    def _generar_food(self, state):
+        random.seed()
+        food_col = random.randint(0, state.tablero.cols)
+        random.seed()
+        food_row = random.randint(0, state.tablero.rows)
+
+        state.food = Cord(food_row, food_col)
         return state
 
     def _calc_position_snake(self, state):

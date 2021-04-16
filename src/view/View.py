@@ -1,8 +1,7 @@
 import pygame
-from pygame.locals import *
 from time import sleep
 from model.Models import Direction
-from pynput.keyboard import Key, Listener
+
 
 class View:
     color_tablero = (0, 0, 0)
@@ -10,7 +9,7 @@ class View:
     color_food = (0,0,255)
 
     def __init__(self, app):
-        self._pixel = 10
+        self._pixel = 20
         self.app = app
     
     def start(self, state):
@@ -20,6 +19,14 @@ class View:
         )
         self.window = pygame.display.set_mode(size)
         self.window.fill(self.color_tablero)
+        pygame.draw.line(
+        self.window, 
+        (0,0, 255),
+        (self._pixel * state.tablero.rows, 0),
+        (self._pixel * state.tablero.rows,
+        self._pixel * state.tablero.cols),
+        2)
+        pygame.display.flip()
     
     def leer(self):
         with Listener(
@@ -28,13 +35,20 @@ class View:
 
     def render(self, state):
         for event in pygame.event.get():
-            if event.type is pygame.QUIT:
-                self._key_event(Key.esc)
+            if event.type == pygame.KEYDOWN:
+                self._key_event(pygame.key.name(event.key))
+            if event.type == pygame.QUIT:
                 quit()
-                
         self.window.fill(self.color_tablero)
         self._render_snake(state.snake.posiciones)
         self._render_food(state.food)
+        pygame.draw.line(
+        self.window, 
+        (0,0, 255),
+        (self._pixel * state.tablero.rows, 0),
+        (self._pixel * state.tablero.rows,
+        self._pixel * state.tablero.cols),
+        2)
         pygame.display.flip()
     
     def _render_snake(self, snake):
@@ -52,16 +66,11 @@ class View:
                 ((x)   * self._pixel,   y     * self._pixel)]
         
     def _key_event(self, key):
-        print(f"{key}")
-        if(key is Key.esc):
-            quit()
-
-        if(key == Key.up):
-            print("up")
+        if(key == 'up'):
             self.app.send_action(Direction.UP)
-        if(key == Key.down):
+        if(key == 'down'):
             self.app.send_action(Direction.DOWN)
-        if(key == Key.right):
+        if(key == 'right'):
             self.app.send_action(Direction.RIGHT)
-        if(key == Key.left):
+        if(key == 'left'):
             self.app.send_action(Direction.LEFT)

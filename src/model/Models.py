@@ -31,7 +31,7 @@ class State:
 
 def initial_state():
     return State(
-        Tablero(50, 50),
+        Tablero(30, 30),
         Snake([Cord(5,5), Cord(4,5), Cord(3,5), Cord(2,5)]),
         Food(6, 6),
         Direction.RIGHT)
