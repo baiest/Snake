@@ -1,5 +1,6 @@
 from unittest import TestCase
-from model.Models import *
+from src.model.Models import *
+
 class InicializacionTest(TestCase):
     def test_crear_estado_inicial(self):
         state = State(

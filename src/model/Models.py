@@ -34,4 +34,4 @@ def initial_state():
         Tablero(10, 10),
         Snake([Cord(5,5), Cord(4,5)]),
         Food(6, 6),
-        Direction.RIGHT)
+        Direction.DOWN)
