@@ -1,5 +1,6 @@
 from model.Models import Cord, Direction
 import random
+from time import sleep
 class Actions:
     def __init__(self):
         pass
@@ -13,6 +14,7 @@ class Actions:
             state = self._generar_food(state)
         elif (self._movimiento_valido(state, next_direction)):
             self._move_snake_to(state, next_position)
+
         return state
 
     def _crecer_snake(self, state, next_position):
@@ -25,12 +27,15 @@ class Actions:
         food_col = random.randint(0, state.tablero.cols)
         random.seed()
         food_row = random.randint(0, state.tablero.rows)
-
         state.food = Cord(food_row, food_col)
         return state
 
     def _calc_position_snake(self, state):
         current_position = state.snake.posiciones[0]
+        inicio_col = Cord(current_position.row, 0)
+        inicio_row = Cord(0, current_position.col)
+        final_col = Cord(current_position.row, state.tablero.cols - 1)
+        final_row = Cord(state.tablero.rows - 1, current_position.col)
 
         dic_direction = {
             Direction.UP.value: Cord(
@@ -46,7 +51,16 @@ class Actions:
                 current_position.row,
                 current_position.col - 1)
         }
-        current_position = dic_direction[state.direction.value]
+        if(state.snake.posiciones[0].row >= state.tablero.rows):
+            current_position = inicio_row
+        elif(state.snake.posiciones[0].col >= state.tablero.cols):
+            current_position = inicio_col
+        elif(state.snake.posiciones[0].col < 0):
+            current_position = final_col
+        elif(state.snake.posiciones[0].row < 0):
+            current_position = final_row
+        else:
+            current_position = dic_direction[state.direction.value]
         return current_position
     
     def change_direction(self, state, direction):

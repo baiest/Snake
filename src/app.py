@@ -14,7 +14,7 @@ class App:
         print('Inicia el Juego')
         view = View(self)
         view.start(self.state)
-        while True:
+        while not self.state.game_over:
             self.state = self.actions.move_snake(self.state)
             view.render(self.state)
             sleep(0.05)
