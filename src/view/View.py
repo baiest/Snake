@@ -27,11 +27,6 @@ class View:
         self._pixel * state.tablero.cols),
         2)
         pygame.display.flip()
-    
-    def leer(self):
-        with Listener(
-            on_press=self._key_event) as listener:
-            listener.join()
 
     def render(self, state):
         for event in pygame.event.get():

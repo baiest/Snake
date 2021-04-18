@@ -13,4 +13,5 @@ class InicializacionTest(TestCase):
         tipos_atributos = [Tablero, Snake, Food, Direction, bool]
         existe_atributo = [type(attr) in tipos_atributos for attr in attr_state]
         result = not False in existe_atributo
+        
         self.assertTrue(result)
