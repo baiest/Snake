@@ -1,5 +1,5 @@
 env/
-htmlcov/
+htmlcov/*
 __pycache__/
 *,cover
 .coverage
