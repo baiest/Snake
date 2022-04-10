@@ -1,6 +1,7 @@
 from unittest import TestCase
 import sys
-sys.path.append('src')
+import os
+sys.path.append(os.path.dirname(os.path.realpath(__file__)) + "/../src")
 from model.Models import *
 
 class InicializacionTest(TestCase):

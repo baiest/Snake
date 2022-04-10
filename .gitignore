@@ -1,4 +1,4 @@
-env/
+venv/
 htmlcov/*
 __pycache__/
 *,cover
